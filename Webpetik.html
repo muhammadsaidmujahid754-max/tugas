@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesantren PeTIK Jombang | YBM PLN</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font Inter & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        petik: {
+                            blue: '#0097D7',
+                            cyan: '#00bcd4',
+                            dark: '#0c2d48',
+                            navy: '#05192d',
+                            yellow: '#f8b319',
+                            gold: '#fbc02d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Background Animated Gradient */
+        body {
+            background: linear-gradient(-45deg, #05192d, #093b5e, #0084ba, #00b4d8, #072e49);
+            background-size: 400% 400%;
+            animation: gradientBG 18s ease infinite;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Canvas Api Kursor Overlay */
+        #fire-cursor-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(248, 179, 25, 0.5);
+            box-shadow: 0 15px 35px -5px rgba(0, 188, 212, 0.3);
+        }
+
+        .glass-nav {
+            background: rgba(5, 25, 45, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05192d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0097D7;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f8b319;
+        }
+    </style>
+</head>
+<body class="relative antialiased selection:bg-petik-yellow selection:text-gray-900">
+
+    <!-- Canvas Api Kursor Menyala -->
+    <canvas id="fire-cursor-canvas"></canvas>
+
+    <!-- Header & Navigasi -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo PeTIK Presisi di Pojok Kiri Atas -->
+                <a href="#beranda" class="flex items-center gap-3 group focus:outline-none">
+                    <div class="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-md">
+                        <!-- SVG Logo PeTIK Jombang - Persis sesuai desain aslinya -->
+                        <svg viewBox="0 0 300 300" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Lingkaran Putih -->
+                            <circle cx="150" cy="150" r="146" fill="#FFFFFF" stroke="#0097D7" stroke-width="12" />
+                            
+                            <!-- Circular Text Atas & Bawah -->
+                            <defs>
+                                <path id="textPathTop" d="M 40,150 A 110,110 0 1,1 260,150" fill="none" />
+                                <path id="textPathBottom" d="M 260,150 A 110,110 0 0,1 40,150" fill="none" />
+                                <!-- Gradasi Simbol Infinity Khas PeTIK (Biru Gelap -> Cyan -> Kuning) -->
+                                <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#1e3c72" />
+                                    <stop offset="25%" stop-color="#0097d7" />
+                                    <stop offset="50%" stop-color="#00c8b3" />
+                                    <stop offset="85%" stop-color="#f8b319" />
+                                    <stop offset="100%" stop-color="#ffd000" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Teks Melingkar -->
+                            <text font-family="'Inter', sans-serif" font-weight="700" font-size="14.5" fill="#0077b6" letter-spacing="1.2">
+                                <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">
+                                    Pesantren Teknologi Informasi dan Komunikasi
+                                </textPath>
+                            </text>
+                            
+                            <text font-family="'Inter', sans-serif" font-weight="700" font-size="14.5" fill="#0077b6" letter-spacing="1.5">
+                                <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">
+                                    - Jombang -
+                                </textPath>
+                            </text>
+
+                            <!-- Simbol Infinity PeTIK -->
+                            <path d="M 105,115 C 80,115 65,130 65,150 C 65,170 80,185 105,185 C 130,185 145,165 150,150 C 155,135 170,115 195,115 C 220,115 235,130 235,150 C 235,170 220,185 195,185 C 170,185 155,165 150,150 C 145,135 130,115 105,115 Z" 
+                                  fill="none" 
+                                  stroke="url(#infinityGrad)" 
+                                  stroke-width="19" 
+                                  stroke-linecap="round" 
+                                  stroke-linejoin="round" />
+
+                            <!-- Teks Tengah: PeTIK Jombang -->
+                            <text x="150" y="210" font-family="'Inter', 'Poppins', sans-serif" font-weight="700" font-size="18" fill="#004777" text-anchor="middle">
+                                PeTIK Jombang
+                            </text>
+
+                            <!-- Mini Logo YBM PLN di bawah -->
+                            <g transform="translate(116, 222) scale(0.68)">
+                                <!-- Motif Islami Bintang Delapan YBM -->
+                                <path d="M15,4 L20,9 L27,9 L27,16 L32,21 L27,26 L27,33 L20,33 L15,38 L10,33 L3,33 L3,26 L-2,21 L3,16 L3,9 L10,9 Z" fill="none" stroke="#00838f" stroke-width="2.5" />
+                                <rect x="23" y="1" width="7" height="7" fill="#f8b319" rx="1.5" />
+                                <!-- Teks YBM PLN -->
+                                <text x="36" y="16" font-family="'Inter', sans-serif" font-weight="900" font-size="15" fill="#003554">YBM</text>
+                                <text x="36" y="31" font-family="'Inter', sans-serif" font-weight="900" font-size="16" fill="#0097d7">PLN</text>
+                                <text x="36" y="39" font-family="'Inter', sans-serif" font-weight="500" font-size="6.5" fill="#555">Yayasan Baitul Maal</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Label Brand -->
+                    <div class="flex flex-col">
+                        <span class="font-heading font-extrabold text-lg sm:text-xl text-white tracking-wide flex items-center gap-1.5">
+                            PeTIK <span class="text-petik-yellow">JOMBANG</span>
+                        </span>
+                        <span class="text-[10px] sm:text-xs text-cyan-200 tracking-wider uppercase font-semibold">
+                            Pesantren Teknologi Informasi & Komunikasi | YBM PLN
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <a href="#beranda" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-petik-yellow hover:bg-white/10 transition">Beranda</a>
+                    <a href="#tentang" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-petik-yellow hover:bg-white/10 transition">Tentang</a>
+                    <a href="#visimisi" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-petik-yellow hover:bg-white/10 transition">Visi Misi</a>
+                    <a href="#jurusan" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-petik-yellow hover:bg-white/10 transition">Jurusan</a>
+                    <a href="#fasilitas" class="px-3 py-2 rounded-lg text-sm font-medium hover:text-petik-yellow hover:bg-white/10 transition">Fasilitas</a>
+                    <a href="#kontak" class="ml-2 px-5 py-2.5 rounded-full text-sm font-bold bg-gradient-to-r from-petik-yellow to-amber-500 text-gray-950 hover:shadow-lg hover:shadow-petik-yellow/30 hover:scale-105 transition transform active:scale-95">Hubungi Kami</a>
+                </nav>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-200 hover:text-white p-2 rounded-lg focus:outline-none" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Modal/Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-6 space-y-2 border-t border-white/10 bg-petik-navy/95 backdrop-blur-xl">
+            <a href="#beranda" class="block px-3 py-2.5 rounded-lg text-base font-medium hover:bg-white/10 text-white">Beranda</a>
+            <a href="#tentang" class="block px-3 py-2.5 rounded-lg text-base font-medium hover:bg-white/10 text-white">Tentang PeTIK</a>
+            <a href="#visimisi" class="block px-3 py-2.5 rounded-lg text-base font-medium hover:bg-white/10 text-white">Visi & Misi</a>
+            <a href="#jurusan" class="block px-3 py-2.5 rounded-lg text-base font-medium hover:bg-white/10 text-white">Jurusan & Kurikulum</a>
+            <a href="#fasilitas" class="block px-3 py-2.5 rounded-lg text-base font-medium hover:bg-white/10 text-white">Fasilitas Kampus</a>
+            <a href="#kontak" class="block px-3 py-3 rounded-xl text-center font-bold bg-petik-yellow text-gray-900 mt-2">Hubungi Kami</a>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- Hero Section -->
+        <section id="beranda" class="relative py-20 lg:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-petik-yellow/40 text-petik-yellow text-xs sm:text-sm font-bold tracking-wide">
+                        <i class="fa-solid fa-graduation-cap"></i> 100% BEASISWA PENUH DHUAFA (1 TAHUN)
+                    </div>
+                    <h1 class="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                        Mencetak Generasi <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-petik-yellow to-yellow-400">Mahasantri IT</span> Beradab & Kompeten
+                    </h1>
+                    <p class="text-gray-200 text-base sm:text-lg lg:text-xl font-normal leading-relaxed max-w-2xl">
+                        <strong>Pesantren PeTIK Jombang</strong> adalah lembaga vokasi Teknologi Informasi dan Komunikasi di bawah naungan <strong>Yayasan Baitul Maal (YBM) PLN</strong>. Mengintegrasikan keahlian digital mutakhir dengan tradisi kajian kitab kuning ulama salaf bersanad.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
+                        <a href="#jurusan" class="px-8 py-3.5 rounded-xl font-bold bg-petik-yellow text-gray-950 hover:bg-yellow-400 transition shadow-lg shadow-petik-yellow/20 hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-laptop-code mr-2"></i> Jelajahi Jurusan
+                        </a>
+                        <a href="#fasilitas" class="px-8 py-3.5 rounded-xl font-bold glass-card text-white hover:bg-white/20 transition hover:scale-105 active:scale-95">
+                            <i class="fa-solid fa-mosque mr-2"></i> Fasilitas Lengkap
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-md p-6 glass-card rounded-3xl border border-white/20 shadow-2xl">
+                        <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3.5 h-3.5 rounded-full bg-red-500"></span>
+                                <span class="w-3.5 h-3.5 rounded-full bg-yellow-500"></span>
+                                <span class="w-3.5 h-3.5 rounded-full bg-green-500"></span>
+                            </div>
+                            <span class="text-xs text-cyan-200 font-mono"><i class="fa-solid fa-code text-petik-yellow"></i> petik-jombang.id</span>
+                        </div>
+                        <div class="mt-5 space-y-4 font-mono text-xs sm:text-sm">
+                            <div class="p-3 bg-black/40 rounded-xl border border-white/5">
+                                <span class="text-pink-400">const</span> <span class="text-yellow-300">mahasantri</span> = {<br>
+                                &nbsp;&nbsp;karakter: <span class="text-cyan-300">'Qurani & Berakhlak'</span>,<br>
+                                &nbsp;&nbsp;keahlian: [<span class="text-cyan-300">'PPL'</span>, <span class="text-cyan-300">'Digital Marketing'</span>],<br>
+                                &nbsp;&nbsp;biaya: <span class="text-yellow-400">0 /* 100% Gratis */</span>,<br>
+                                &nbsp;&nbsp;sponsor: <span class="text-cyan-300">'YBM PLN'</span><br>
+                                };
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 text-center font-sans">
+                                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                                    <div class="text-2xl font-bold text-petik-yellow">1 Tahun</div>
+                                    <div class="text-xs text-gray-300">Pendidikan Intensif</div>
+                                </div>
+                                <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                                    <div class="text-2xl font-bold text-cyan-400">100%</div>
+                                    <div class="text-xs text-gray-300">Siap Kerja & Mandiri</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tentang PeTIK Section (Berdasarkan Gambar Informasi Seputar PeTIK Jombang) -->
+        <section id="tentang" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-5">
+                        <div class="inline-block px-3 py-1 rounded-md bg-petik-blue/30 text-cyan-200 text-xs font-bold uppercase tracking-wider">
+                            Profil Lembaga
+                        </div>
+                        <h2 class="font-heading text-2xl sm:text-4xl font-extrabold text-white">
+                            Informasi Seputar PeTIK Jombang
+                        </h2>
+                        <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
+                            <strong>PeTIK Jombang</strong> merupakan lembaga pendidikan vokasi Teknologi Informasi dan Komunikasi dengan dukungan pembelajaran bidang kepesantrenan (Kajian Kitab Kuning) dari ulama-ulama yang memiliki sanad keilmuan yang jelas.
+                        </p>
+                        <p class="text-gray-200 leading-relaxed text-sm sm:text-base">
+                            Di bawah naungan <strong>Yayasan Baitul Maal (YBM) PLN</strong>, PeTIK berkomitmen melanjutkan visi dan misi untuk menebarkan manfaat kepada umat seluas-luasnya. Hal ini diwujudkan dengan memberikan kemanfaatan kepada anak-anak dhuafa untuk mengenyam pendidikan teknologi informasi dan komunikasi selama <strong>1 (satu) tahun</strong> secara cuma-cuma.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <span class="px-3.5 py-1.5 rounded-lg bg-white/10 text-xs font-semibold text-cyan-300"><i class="fa-solid fa-check-circle mr-1 text-petik-yellow"></i> Pendidikan Vokasi IT</span>
+                            <span class="px-3.5 py-1.5 rounded-lg bg-white/10 text-xs font-semibold text-cyan-300"><i class="fa-solid fa-check-circle mr-1 text-petik-yellow"></i> Kajian Kitab Bersanad</span>
+                            <span class="px-3.5 py-1.5 rounded-lg bg-white/10 text-xs font-semibold text-cyan-300"><i class="fa-solid fa-check-circle mr-1 text-petik-yellow"></i> Pembinaan Karakter Unggul</span>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-4 flex justify-center">
+                        <div class="p-6 rounded-2xl bg-gradient-to-br from-petik-yellow/20 to-cyan-500/20 border border-white/20 text-center space-y-4">
+                            <div class="w-20 h-20 mx-auto rounded-2xl bg-white flex items-center justify-center text-petik-dark text-4xl shadow-lg">
+                                <i class="fa-solid fa-hand-holding-heart text-petik-blue"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Inisiatif YBM PLN</h3>
+                            <p class="text-xs text-gray-200">
+                                Dikelola secara profesional dari dana zakat, infak, dan sedekah insan PLN guna memutus mata rantai kemiskinan melalui literasi digital.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visi & Misi Section -->
+        <section id="visimisi" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-petik-yellow font-bold text-sm tracking-wider uppercase">Arah & Landasan</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-1">Visi & Misi PeTIK Jombang</h2>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-petik-yellow to-cyan-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Visi Card -->
+                <div class="glass-card rounded-3xl p-8 border-t-4 border-t-petik-yellow flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-petik-yellow/20 text-petik-yellow flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-4">Visi Kami</h3>
+                        <p class="text-gray-200 leading-relaxed text-base sm:text-lg">
+                            "Menjadi lembaga pendidikan vokasi IT terdepan yang berintegritas tinggi, mencetak generasi berkarakter tauhid yang kuat, berakhlak mulia, mandiri, profesional di bidang teknologi, serta memberikan kemanfaatan seluas-luasnya bagi umat dan bangsa."
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-white/10 flex items-center text-xs text-cyan-200 font-medium">
+                        <i class="fa-solid fa-star text-petik-yellow mr-2"></i> Menuju Generasi Teknokrat Muslim Unggulan
+                    </div>
+                </div>
+
+                <!-- Misi Card -->
+                <div class="glass-card rounded-3xl p-8 border-t-4 border-t-cyan-400">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-400/20 text-cyan-400 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="font-heading text-2xl font-bold text-white mb-4">Misi PeTIK</h3>
+                    <ul class="space-y-4 text-gray-200 text-sm sm:text-base">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-400/20 text-cyan-300 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">1</span>
+                            <span>Menyelenggarakan pendidikan vokasi IT gratis dan berkualitas bagi anak dhuafa berpotensi tinggi.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-400/20 text-cyan-300 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">2</span>
+                            <span>Membekali santri keahlian praktis di bidang Pengembangan Perangkat Lunak (PPL) dan Digital Marketing (DM).</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-400/20 text-cyan-300 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">3</span>
+                            <span>Menanamkan nilai-nilai kepesantrenan, adab thalabul ilmi, dan fiqih keseharian melalui kurikulum kitab kuning bersanad.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-cyan-400/20 text-cyan-300 flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">4</span>
+                            <span>Menjembatani lulusan dengan dunia industri kerja (DUDI) dan kewirausahaan digital digital secara berkelanjutan.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jurusan & Pembelajaran (Sesuai Brosur Informasi) -->
+        <section id="jurusan" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-petik-yellow font-bold text-sm tracking-wider uppercase">Kurikulum & Keahlian</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-1">Jurusan Pendidikan Vokasi</h2>
+                <p class="text-gray-300 text-sm sm:text-base mt-2">Dua jurusan IT modern yang dipadukan harmonis dengan kurikulum kepesantrenan</p>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-petik-yellow to-cyan-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- PPL -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-3xl mb-6">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-2">PPL</h3>
+                        <h4 class="text-sm font-semibold text-cyan-300 mb-4">Pengembangan Perangkat Lunak</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                            Mahasantri diajarkan secara intensif cara membuat website mutakhir, aplikasi mobile (Android/iOS), aplikasi berbasis web, perancangan UI/UX, arsitektur database, dan clean code standard industri.
+                        </p>
+                    </div>
+                    <div class="space-y-2 pt-4 border-t border-white/10 text-xs text-gray-200">
+                        <div class="flex items-center"><i class="fa-solid fa-check text-petik-yellow mr-2"></i> Website & Web Apps</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-petik-yellow mr-2"></i> Mobile Apps Development</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-petik-yellow mr-2"></i> Database & UI/UX Design</div>
+                    </div>
+                </div>
+
+                <!-- DM -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-petik-yellow/20 text-petik-yellow flex items-center justify-center text-3xl mb-6">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-2">DM</h3>
+                        <h4 class="text-sm font-semibold text-petik-yellow mb-4">Digital Marketing</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                            Mahasantri diajarkan menggunakan tool marketing online internet, memasang iklan berbayar (Instagram, Facebook, TikTok Ads) untuk peningkatan penjualan, SEO (Search Engine Optimization), content creation, dan strategi e-commerce.
+                        </p>
+                    </div>
+                    <div class="space-y-2 pt-4 border-t border-white/10 text-xs text-gray-200">
+                        <div class="flex items-center"><i class="fa-solid fa-check text-cyan-300 mr-2"></i> FB, Instagram, TikTok Ads</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-cyan-300 mr-2"></i> Search Engine Optimization (SEO)</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-cyan-300 mr-2"></i> Social Media & Sales Funnel</div>
+                    </div>
+                </div>
+
+                <!-- Kepesantrenan -->
+                <div class="glass-card rounded-3xl p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mb-6">
+                            <i class="fa-solid fa-book-quran"></i>
+                        </div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-2">Kepesantrenan</h3>
+                        <h4 class="text-sm font-semibold text-emerald-300 mb-4">Kajian Kitab Kuning Bersanad</h4>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                            Fondasi spiritual dan akhlak santri ditumbuhkan melalui kajian intensif kitab-kitab salaf terpercaya:
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 text-xs text-gray-200 font-medium">
+                            <span class="p-2 rounded bg-white/5">• Hadits Arbain</span>
+                            <span class="p-2 rounded bg-white/5">• Ta'lim Muta'alim</span>
+                            <span class="p-2 rounded bg-white/5">• Aqidatul Awam</span>
+                            <span class="p-2 rounded bg-white/5">• Safinatunnajah</span>
+                            <span class="p-2 rounded bg-white/5">• Fathul Qorib</span>
+                            <span class="p-2 rounded bg-white/5">• Sulam Taufiq</span>
+                            <span class="p-2 rounded bg-white/5">• Bidayatul Hidayah</span>
+                            <span class="p-2 rounded bg-white/5">• Tafsir Al-Ibriz & Jurumiyah</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 text-xs text-emerald-300">
+                        <i class="fa-solid fa-award mr-1"></i> Sanad keilmuan jelas & bimbingan ustadz ahli
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fasilitas Lengkap Sesuai Permintaan -->
+        <!-- (kelas, aula, asrama, tempat olahraga, dapur, masjid, kantor) -->
+        <section id="fasilitas" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-petik-yellow font-bold text-sm tracking-wider uppercase">Sarana Prasarana</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-1">Fasilitas Pesantren PeTIK</h2>
+                <p class="text-gray-300 text-sm sm:text-base mt-2">Dukungan infrastruktur lengkap untuk menunjang aktivitas belajar IT dan ibadah santri secara maksimal</p>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-petik-yellow to-cyan-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 1. Kelas / Lab Komputer -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-cyan-500/30 transition">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Ruang Kelas & Lab</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Dilengkapi fasilitas komputer berkecepatan tinggi, proyektor interaktif, AC, dan koneksi internet fiber optik untuk coding.
+                    </p>
+                </div>
+
+                <!-- 2. Aula -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-petik-yellow/20 text-petik-yellow flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-petik-yellow/30 transition">
+                        <i class="fa-solid fa-users-rectangle"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Aula Serbaguna</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Ruang pertemuan luas untuk seminar IT berskala besar, guest lecture praktisi teknologi, wisuda, dan kajian akbar mahasantri.
+                    </p>
+                </div>
+
+                <!-- 3. Asrama -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-blue-500/30 transition">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Asrama Santri</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Hunian santri yang bersih, tertata, nyaman, dan aman dengan sirkulasi udara baik serta pembimbingan intensif wali asrama.
+                    </p>
+                </div>
+
+                <!-- 4. Tempat Olahraga -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-amber-500/30 transition">
+                        <i class="fa-solid fa-volleyball"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Tempat Olahraga</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Area lapangan olahraga outdoor untuk futsal, voli, bulu tangkis, dan tenis meja demi menjaga kebugaran jasmani mahasantri.
+                    </p>
+                </div>
+
+                <!-- 5. Dapur -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-rose-500/20 text-rose-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-rose-500/30 transition">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Dapur & Ruang Makan</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Penyediaan asupan makanan bergizi dan higienis secara rutin 3 kali sehari bagi seluruh mahasantri selama menempuh pendidikan.
+                    </p>
+                </div>
+
+                <!-- 6. Masjid -->
+                <div class="glass-card rounded-2xl p-6 text-center group">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-emerald-500/30 transition">
+                        <i class="fa-solid fa-mosque"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Masjid / Musholla</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Pusat peribadatan sholat berjamaah 5 waktu, tadarus Al-Qur'an, dan majelis kajian kitab kuning bersama para ustadz pengasuh.
+                    </p>
+                </div>
+
+                <!-- 7. Kantor -->
+                <div class="glass-card rounded-2xl p-6 text-center group sm:col-span-2 lg:col-span-2">
+                    <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 group-hover:bg-purple-500/30 transition">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-white mb-2">Kantor & Ruang Pengelola</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto">
+                        Pusat administrasi akademik, ruang koordinasi dewan guru, manajemen YBM PLN, serta ruang konsultasi karir & konseling mahasantri.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fitur Hubungi Kami (Interactive Form & Toast) -->
+        <section id="kontak" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-petik-yellow font-bold text-sm tracking-wider uppercase">Terhubung Bersama Kami</span>
+                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white mt-1">Hubungi PeTIK Jombang</h2>
+                <div class="w-24 h-1.5 bg-gradient-to-r from-petik-yellow to-cyan-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Kontak Detail Info -->
+                <div class="lg:col-span-5 glass-card rounded-3xl p-8 space-y-6">
+                    <div>
+                        <h3 class="font-heading text-2xl font-bold text-white mb-2">Informasi Sekretariat</h3>
+                        <p class="text-gray-300 text-sm">
+                            Punya pertanyaan seputar penerimaan mahasantri baru, program beasiswa YBM PLN, atau kemitraan industri IT? Hubungi kami.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-4 p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-400/20 text-cyan-300 flex items-center justify-center flex-shrink-0 text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Alamat Kampus</h4>
+                                <p class="text-gray-300 text-xs">Jombang, Jawa Timur, Indonesia (Pesantren Teknologi Informasi dan Komunikasi - YBM PLN)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-10 h-10 rounded-lg bg-petik-yellow/20 text-petik-yellow flex items-center justify-center flex-shrink-0 text-lg">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Email Resmi</h4>
+                                <p class="text-gray-300 text-xs">kontak@petik-jombang.id / info@ybmpln.org</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-3 rounded-xl bg-white/5 border border-white/5">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center flex-shrink-0 text-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">Telepon / WhatsApp</h4>
+                                <p class="text-gray-300 text-xs">+62 812-3456-7890 (Layanan Informasi PeTIK)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-white/10">
+                        <h4 class="text-xs uppercase font-bold text-cyan-200 tracking-wider mb-3">Media Sosial Resmi</h4>
+                        <div class="flex space-x-3">
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-petik-yellow hover:text-gray-900 transition flex items-center justify-center text-white">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-petik-yellow hover:text-gray-900 transition flex items-center justify-center text-white">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-petik-yellow hover:text-gray-900 transition flex items-center justify-center text-white">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-petik-yellow hover:text-gray-900 transition flex items-center justify-center text-white">
+                                <i class="fa-brands fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulir Kontak Interaktif -->
+                <div class="lg:col-span-7 glass-card rounded-3xl p-8">
+                    <h3 class="font-heading text-2xl font-bold text-white mb-2">Kirim Pesan / Konfirmasi</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm mb-6">Silakan lengkapi formulir di bawah ini. Tim pengelola PeTIK akan segera merespons Anda.</p>
+
+                    <form id="contact-form" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-200 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                                <input type="text" id="name" required placeholder="Contoh: Ahmad Fauzi" 
+                                       class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-petik-yellow focus:ring-1 focus:ring-petik-yellow text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-200 uppercase tracking-wider mb-1">Alamat Email</label>
+                                <input type="email" id="email" required placeholder="nama@email.com" 
+                                       class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-petik-yellow focus:ring-1 focus:ring-petik-yellow text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-200 uppercase tracking-wider mb-1">Topik Pertanyaan</label>
+                            <select id="subject" class="w-full px-4 py-3 rounded-xl bg-petik-dark/90 border border-white/20 text-white focus:outline-none focus:border-petik-yellow text-sm">
+                                <option value="pendaftaran">Info Pendaftaran Mahasantri Baru</option>
+                                <option value="kurikulum">Kurikulum PPL & Digital Marketing</option>
+                                <option value="kerjasama">Kemitraan Industri / Perusahaan</option>
+                                <option value="donasi">Informasi Program YBM PLN</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-200 uppercase tracking-wider mb-1">Pesan Anda</label>
+                            <textarea id="message" rows="4" required placeholder="Tuliskan pesan atau pertanyaan Anda secara rinci di sini..." 
+                                      class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-petik-yellow focus:ring-1 focus:ring-petik-yellow text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn" 
+                                class="w-full py-3.5 px-6 rounded-xl font-bold bg-gradient-to-r from-petik-yellow to-amber-500 text-gray-950 hover:brightness-110 shadow-lg shadow-petik-yellow/30 hover:scale-[1.01] transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sekarang
+                        </button>
+                    </form>
+
+                    <!-- Alert / Pesan Notifikasi Sukses (Tanpa menggunakan fungsi alert()) -->
+                    <div id="form-feedback" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 border border-emerald-400/50 text-emerald-200 text-sm flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-xl text-emerald-400"></i>
+                        <div>
+                            <p class="font-bold">Pesan Berhasil Terkirim!</p>
+                            <p class="text-xs">Terima kasih telah menghubungi PeTIK Jombang. Pesan Anda telah kami terima.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-white/15 bg-black/40 backdrop-blur-md py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 shadow">
+                    <!-- Mini Logo PeTIK -->
+                    <i class="fa-solid fa-infinity text-petik-blue text-lg"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-white text-sm">Pesantren PeTIK Jombang</div>
+                    <div class="text-xs text-gray-400">Di Bawah Naungan YBM PLN</div>
+                </div>
+            </div>
+
+            <div class="text-xs text-gray-300">
+                &copy; <span id="year">2026</span> PeTIK Jombang | YBM PLN. All Rights Reserved.
+            </div>
+
+            <div class="flex space-x-6 text-xs text-cyan-300">
+                <a href="#beranda" class="hover:text-petik-yellow transition">Beranda</a>
+                <a href="#tentang" class="hover:text-petik-yellow transition">Tentang</a>
+                <a href="#jurusan" class="hover:text-petik-yellow transition">Jurusan</a>
+                <a href="#fasilitas" class="hover:text-petik-yellow transition">Fasilitas</a>
+                <a href="#kontak" class="hover:text-petik-yellow transition">Kontak</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Efek JavaScript: Kursor Api Menyala & Interaksi UI -->
+    <script>
+        // Set tahun hak cipta otomatis
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tutup menu mobile ketika link ditekan
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Form submit handler dengan custom notification (tanpa alert bawaan)
+        const contactForm = document.getElementById('contact-form');
+        const formFeedback = document.getElementById('form-feedback');
+        const submitBtn = document.getElementById('submit-btn');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+                formFeedback.classList.remove('hidden');
+                contactForm.reset();
+                setTimeout(() => {
+                    formFeedback.classList.add('hidden');
+                }, 6000);
+            }, 800);
+        });
+
+        /* ========================================================
+           EFEK KURSOR API MENYALA (Fire Flame Cursor Effect)
+           Menggunakan Canvas HTML5 & Partikel Berpendar (Blend Screen)
+           ======================================================== */
+        const canvas = document.getElementById('fire-cursor-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const mouse = {
+            x: width / 2,
+            y: height / 2,
+            isMoving: false,
+            timer: null
+        };
+
+        // Track pergerakan mouse & sentuhan layar (touch)
+        function updatePointer(x, y) {
+            mouse.x = x;
+            mouse.y = y;
+            mouse.isMoving = true;
+            clearTimeout(mouse.timer);
+            // Tambahkan semburan partikel ekstra saat kursor digerakkan
+            for (let i = 0; i < 4; i++) {
+                particles.push(new FireParticle(mouse.x, mouse.y));
+            }
+            mouse.timer = setTimeout(() => {
+                mouse.isMoving = false;
+            }, 100);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            updatePointer(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        // Kelas Partikel Nyala Api
+        class FireParticle {
+            constructor(x, y) {
+                this.x = x + (Math.random() - 0.5) * 12;
+                this.y = y + (Math.random() - 0.5) * 12;
+                // Partikel naik ke atas seperti lidah api
+                this.vx = (Math.random() - 0.5) * 2.2;
+                this.vy = -(Math.random() * 3.5 + 1.8);
+                this.size = Math.random() * 14 + 10;
+                this.initialSize = this.size;
+                this.life = 0;
+                this.maxLife = Math.random() * 25 + 20;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.size = Math.max(0, this.initialSize * (1 - this.life / this.maxLife));
+                this.life++;
+            }
+
+            draw(ctx) {
+                const progress = this.life / this.maxLife;
+                // Gradasi warna api dari inti putih-kuning -> oranye -> merah -> asap memudar
+                let r, g, b, alpha;
+                if (progress < 0.25) {
+                    // Inti api putih ke kuning terang
+                    r = 255;
+                    g = Math.floor(255 - progress * 200);
+                    b = Math.floor(180 * (1 - progress * 4));
+                    alpha = 0.9;
+                } else if (progress < 0.65) {
+                    // Oranye ke merah hangat
+                    r = 255;
+                    g = Math.floor(180 * (1 - (progress - 0.25) / 0.4));
+                    b = 20;
+                    alpha = 0.7;
+                } else {
+                    // Merah redup menuju asap transparan
+                    r = Math.floor(220 * (1 - (progress - 0.65) / 0.35));
+                    g = 30;
+                    b = 10;
+                    alpha = Math.max(0, 0.5 * (1 - progress));
+                }
+
+                ctx.save();
+                ctx.globalCompositeOperation = 'lighter'; // Efek api bercahaya menyatu
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.size
+                );
+                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+                gradient.addColorStop(0.5, `rgba(${r}, ${Math.max(0, g - 40)}, 0, ${alpha * 0.5})`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particles = [];
+
+        // Loop Animasi Kursor Api
+        function animateFire() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Jika kursor aktif atau diam, tetap keluarkan sedikit percikan api menyala
+            if (mouse.x && mouse.y) {
+                const count = mouse.isMoving ? 3 : 1;
+                for (let i = 0; i < count; i++) {
+                    particles.push(new FireParticle(mouse.x, mouse.y));
+                }
+            }
+
+            // Update dan gambar semua partikel
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                p.draw(ctx);
+                if (p.life >= p.maxLife || p.size <= 0.2) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateFire);
+        }
+
+        // Mulai animasi
+        animateFire();
+    </script>
+</body>
+</html>
