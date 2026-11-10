@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cetak Bilangan Genap 1-10</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f0f2f5;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 280px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 1.25rem;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 16px 0 0 0;
+    }
+    li {
+      background: #e7f3ff;
+      color: #0066cc;
+      font-weight: bold;
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      border-left: 4px solid #0066cc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Bilangan Genap (1 - 10)</h2>
+    <ul id="daftarGenap"></ul>
+  </div>
+
+  <script>
+    const listElement = document.getElementById("daftarGenap");
+
+    // Perulangan dari 1 sampai 10
+    for (let i = 1; i <= 10; i++) {
+      // Cek apakah angka habis dibagi 2
+      if (i % 2 === 0) {
+        const item = document.createElement("li");
+        item.textContent = `Angka: ${i}`;
+        listElement.appendChild(item);
+
+        // Cetak juga ke console browser (F12)
+        console.log(i);
+      }
+    }
+  </script>
+
+</body>
+</html>
