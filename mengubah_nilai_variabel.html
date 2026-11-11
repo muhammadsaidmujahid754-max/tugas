@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ubah Variabel Nilai</title>
+</head>
+<body >
+
+  <h2 style="color: blue;">Hasil Nilai Ujian</h2>
+  <p id="tampilan-awal"></p>
+  <p id="tampilan-baru"></p>
+
+  <script>
+    // 1. Buat variabel nilai awal
+    let nilai = 70;
+
+    // 2. Tampilkan nilai awal ke console dan layar browser
+    console.log("Nilai awal:", nilai);
+    document.getElementById("tampilan-awal").textContent = "Nilai awal: " + nilai;
+
+    // 3. Ubah nilai menjadi 85 tanpa kata let
+    nilai = 85;
+
+    // 4. Tampilkan nilai yang baru ke console dan layar browser
+    console.log("Nilai baru:", nilai);
+    document.getElementById("tampilan-baru").textContent = "Nilai baru: " + nilai;
+  </script>
+
+</body>
+</html>
